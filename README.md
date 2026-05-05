@@ -4,24 +4,34 @@ A mock e-commerce site used for educational purposes, with a React frontend and 
 
 ## Running locally
 
-Both servers must be running at the same time. Open two terminals:
+From the **repo root**, run both servers with one command:
 
-**Terminal 1 — Backend** (must start first)
+```bash
+npm install   # first time only
+npm run dev
+```
+
+This starts:
+- **Backend** on `http://localhost:5063`
+- **Frontend** on `http://localhost:5173` ← open this in your browser
+
+The Vite dev server proxies all `/api` requests to the backend. If you prefer to start them separately, see the two-terminal instructions below.
+
+<details>
+<summary>Start servers separately</summary>
+
+**Terminal 1 — Backend**
 ```bash
 cd src/backend/MockEcommerce.Api
 dotnet run --launch-profile http
-# API available at http://localhost:5063
 ```
 
 **Terminal 2 — Frontend**
 ```bash
 cd src/frontend
-npm install   # first time only
 npm run dev
-# App available at http://localhost:5173
 ```
-
-The Vite dev server proxies all `/api` requests to `http://localhost:5063`, so the frontend will show "Failed to fetch products" if the backend is not running.
+</details>
 
 ## Running tests
 

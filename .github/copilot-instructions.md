@@ -11,6 +11,16 @@ Tests live outside `src/` in a parallel `test/` tree that mirrors the source str
 
 ## Commands
 
+### Running the full app
+
+```bash
+# From repo root — starts both backend and frontend concurrently
+npm run dev
+# Frontend: http://localhost:5173  |  Backend: http://localhost:5063
+```
+
+Both servers must be running; the frontend proxies `/api` to the backend and will show "Failed to fetch products" if the backend is not up.
+
 ### Frontend
 
 ```bash
@@ -20,7 +30,7 @@ npx vitest run test/frontend/App.test.tsx             # Run a single test file
 npx vitest run -t "renders the header"               # Run tests matching a name pattern
 
 # From src/frontend/
-npm run dev     # Dev server on http://localhost:5173
+npm run dev     # Dev server on http://localhost:5173 (backend must already be running)
 npm run build   # tsc + vite build
 npm run lint    # ESLint
 ```
