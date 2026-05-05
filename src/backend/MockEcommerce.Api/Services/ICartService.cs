@@ -33,4 +33,13 @@ public interface ICartService
 
     /// <summary>Removes all items from the cart.</summary>
     void Clear();
+
+    /// <summary>
+    /// Sets the quantity of an existing cart item.
+    /// Caller must verify the item exists and that quantity is valid before calling.
+    /// </summary>
+    /// <param name="productId">The product ID of the item to update.</param>
+    /// <param name="quantity">The new quantity (must be ≥ 1).</param>
+    /// <returns>The updated cart item.</returns>
+    CartItem Update(int productId, int quantity);
 }

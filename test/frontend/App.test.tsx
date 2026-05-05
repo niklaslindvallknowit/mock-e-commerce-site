@@ -19,12 +19,17 @@ vi.mock('../../src/frontend/src/hooks/useProducts');
 vi.mock('../../src/frontend/src/api');
 
 import { useProducts } from '../../src/frontend/src/hooks/useProducts';
-import { addToCart } from '../../src/frontend/src/api';
+import { addToCart, fetchCart } from '../../src/frontend/src/api';
 
 const mockedUseProducts = vi.mocked(useProducts);
 const mockedAddToCart = vi.mocked(addToCart);
+const mockedFetchCart = vi.mocked(fetchCart);
 
 describe('App', () => {
+  beforeEach(() => {
+    mockedFetchCart.mockResolvedValue([]);
+  });
+
   afterEach(() => {
     vi.restoreAllMocks();
   });
