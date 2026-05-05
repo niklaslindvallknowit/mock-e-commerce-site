@@ -4,6 +4,19 @@
 
 Users can add products to a shared in-memory cart, view the cart in a side drawer accessible from the header icon, adjust item quantities, remove individual items, and see a running total before checkout.
 
+## Implementation order
+
+Implement in this sequence — each layer depends on the one above it:
+
+1. **Models/records** — `UpdateCartItemRequest` record
+2. **Service interface** — add `Update` method to `ICartService`
+3. **Service layer** — implement all methods in `InMemoryCartService`
+4. **API endpoints** — implement stubs + add `PUT /api/cart/{productId}`
+5. **Frontend API layer** — typed fetch wrappers in `api/index.ts`
+6. **Frontend components** — `CartDrawer` component
+7. **Frontend wiring** — `Header` + `App` integration
+8. **Tests** — backend unit → backend integration → frontend
+
 ---
 
 ## Backend
