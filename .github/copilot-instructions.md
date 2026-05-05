@@ -66,7 +66,7 @@ interface CartItem { productId, productName, unitPrice, quantity, totalPrice }
 - `Models/CartItem.cs` — `{ ProductId, ProductName, UnitPrice, Quantity, TotalPrice (computed) }`
 - `Endpoints/CartEndpoints.cs` — also defines the `AddToCartRequest` record `(int ProductId, int Quantity)`
 - `Services/IProductService` — `GetAll()`, `GetById(int)`
-- `Services/MockProductService` — static in-memory list of 5 products (see below), registered as singleton
+- `Services/MockProductService` — static in-memory list of **5 products** (ids 1–5: "Wireless Headphones" $79.99, "Running Shoes" $59.99, "Stainless Steel Water Bottle" $24.99, "Mechanical Keyboard" $109.99, "Yoga Mat" $34.99), registered as singleton; full catalog in the **Seed Product Data** section below
 - `Services/ICartService` — `GetAll()`, `Add(CartItem)`, `GetByProductId(int)`, `Remove(int)`, `Clear()`
 - `Services/InMemoryCartService` — thread-safe (`Lock`) list-backed implementation, registered as singleton; **all methods are `NotImplementedException`**
 - `Program.cs` — registers services, configures CORS for `http://localhost:5173`, maps endpoints, exposes OpenAPI
