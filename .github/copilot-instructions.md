@@ -29,7 +29,7 @@ npm run lint    # ESLint
 
 ```bash
 # Run the API (from src/backend/MockEcommerce.Api/)
-dotnet run      # Starts on http://localhost:5063; OpenAPI at /openapi/v1.json
+dotnet run --launch-profile http      # Starts on http://localhost:5063; OpenAPI at /openapi/v1.json
 
 # Run tests (from test/backend/MockEcommerce.Api.Tests/)
 dotnet test
