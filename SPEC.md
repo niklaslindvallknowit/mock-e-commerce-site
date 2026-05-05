@@ -27,9 +27,24 @@ All four handlers in `CartEndpoints.cs` and all five methods in `InMemoryCartSer
 | Handler | Method + Route | Success | Error cases |
 |---------|----------------|---------|-------------|
 | `GetCart` | `GET /api/cart` | `200 OK` → `CartItem[]` | — |
-| `AddToCart` | `POST /api/cart` | `201 Created` (new item) or `200 OK` (incremented) → `CartItem` | `404` product not found; `400 ValidationProblem` if `Quantity ≤ 0` or resulting quantity would exceed 5 |
+| `AddToCart` | `POST /api/cart` | `201 Created` (new item) or `200 OK` (incremented) → `CartItem` | `404` product not found; `400 ValidationProblem` if `Quantity ≤ 0` or `existing.Quantity + request.Quantity > 5` |
 | `RemoveFromCart` | `DELETE /api/cart/{productId}` | `204 NoContent` | `404 NotFound` if not in cart |
 | `ClearCart` | `DELETE /api/cart` | `204 NoContent` | — |
+
+#### `AddToCart` — exact handler logic (order matters)
+
+```
+1. If request.Quantity ≤ 0         → 400 ValidationProblem "Quantity must be at least 1"
+2. Look up product by productId    → 404 if not found
+3. Look up existing cart item      → existingQty = existing?.Quantity ?? 0
+4. If existingQty + request.Quantity > 5
+                                   → 400 ValidationProblem "Cannot exceed 5 of any single item"
+                                     *** cart state is unchanged — do NOT call Add ***
+5. Call cartService.Add(newItem)   → returns saved CartItem
+6. Return 201 if existingQty was 0, else 200
+```
+
+**Critical:** the max-quantity check (step 4) must happen **before** any call to `cartService.Add()`. The service's `Add` method has no knowledge of the 5-item limit — it just appends or increments. If you call `Add` first and then validate, the cart is already mutated and the original quantity is lost.
 
 ### New endpoint: PUT /api/cart/{productId}
 
@@ -60,7 +75,7 @@ CartItem Update(int productId, int quantity);
 
 ### Validation rules summary
 
-- `POST /api/cart` — `Quantity` must be ≥ 1; `existing quantity + requested quantity` must be ≤ 5
+- `POST /api/cart` — `Quantity` must be ≥ 1; `(existing cart quantity for product) + request.Quantity` must be ≤ 5; validation fires **before** any state mutation
 - `PUT /api/cart/{productId}` — `Quantity` must be ≥ 0; if 1–5 update; if 0 remove; if > 5 reject
 - Both endpoints: `productId` must refer to an existing product (`MockProductService.GetById`)
 
